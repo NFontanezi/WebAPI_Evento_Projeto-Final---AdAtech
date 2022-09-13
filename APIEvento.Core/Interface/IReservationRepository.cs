@@ -6,10 +6,6 @@ namespace APIEvent.Core.Interface
 {
    public interface IReservationRepository
     {
-        //METODOS CITY EVENT 
-        List<CityEvent> GetAllEvents();
-
-
 
         //METODOS EVENT RESERVATION
         List<EventReservation> GetAllReservations();

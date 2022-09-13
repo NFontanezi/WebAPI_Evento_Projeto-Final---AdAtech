@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
+builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<ICityEventService, CityEventService>();
 builder.Services.AddScoped<IEventReservationService, EventReservationService>();

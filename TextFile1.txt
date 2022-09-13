@@ -1,8 +1,6 @@
 
 
 EVENT RESERVATION
-
-
 get
 >>implementar join para busca por titulo
 
@@ -14,3 +12,18 @@ update
 >>corrigir exceção se nao houver o FK existente
 
 delete  - ok
+
+CITY EVENT
+GetService
+>>implementar busca agrupada : data/range
+
+delete
+>>implementar filtro de ativo/ inativo
+
+update
+>> mostrando 2 ids
+
+BOTH
+implementar filtros
+implementar exceçoes
+implementar admin
