@@ -1,0 +1,16 @@
+
+
+EVENT RESERVATION
+
+
+get
+>>implementar join para busca por titulo
+
+insert
+>>tratar numero de evento nao existente
+
+update
+>>Como tirar os campos que nao quero fazer update - somwente quantidade
+>>corrigir exceção se nao houver o FK existente
+
+delete  - ok
