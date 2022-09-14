@@ -46,7 +46,7 @@ namespace APIEvent.Data.Infra.Repository
             return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
         }
 
-        public EventReservation GetReservationsByTitleAndName(string Title, string PersonName)
+        public EventReservation GetReservationsByTitleAndName(string Title, string PersonName) // mudar e like title
         {
             //VERIFICAR JOIN PARA FUNCIONAR
 

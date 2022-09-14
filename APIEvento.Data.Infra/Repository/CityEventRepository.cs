@@ -46,11 +46,11 @@ namespace APIEvent.Data.Infra.Repository
 
         public List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent)
         {
-            var query = "SELECT * FROM cityEvent WHERE Local LIKE @Local AND DateHourEvent = @DateHourEvent";
+            var query = "SELECT * FROM cityEvent WHERE Local LIKE ('%' + @Local + '%') AND CAST(DateHourEvent as DATE) = CAST(@DateHourEvent AS DATE)";
 
 
             var parameters = new DynamicParameters();
-            parameters.Add("@Local", $"%{Local}%");
+            parameters.Add("@Local", Local);
             parameters.Add("@DateHourEvent", DateHourEvent);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");

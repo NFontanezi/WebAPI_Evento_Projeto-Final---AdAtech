@@ -18,9 +18,9 @@ namespace Projeto_WebAPI_Evento.Filters
             Console.WriteLine($"Tipo da exceção {context.Exception.GetType().Name}, mensagem {context.Exception.Message}, stack trace {context.Exception.StackTrace}");
 
             switch (context.Exception)
-            { 
+            {
 
-               case ArgumentNullException:
+                case ArgumentNullException:
                     context.Result = new ObjectResult(problem)
                     {
                         StatusCode = StatusCodes.Status501NotImplemented
@@ -39,5 +39,6 @@ namespace Projeto_WebAPI_Evento.Filters
                     break;
 
             }
+        }
     }
 }
