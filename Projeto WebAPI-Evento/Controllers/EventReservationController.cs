@@ -6,8 +6,8 @@ namespace Projeto_WebAPI_Evento.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Consumes("application/json")]
-    [Produces("application/json")]
+   // [Consumes("application/json")]
+    //[Produces("application/json")]
     public class EventReservationController : Controller
     {
         private readonly IEventReservationService _reservationService;
@@ -25,27 +25,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
 
-        [HttpGet("/reservations/consult/{name}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<EventReservation> GetReservationsByName(string name)
-        {
-            var reservation = _reservationService.GetReservationsByName(name);
-            if (name == null)
-            {
-                return BadRequest();
-            }
-            if (reservation == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_reservationService.GetReservationsByName(name));
-        }
-
-
-        [HttpGet("/reservations/consult2/{title}/{name}")]
+        [HttpGet("/reservations/consult2/{title}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)

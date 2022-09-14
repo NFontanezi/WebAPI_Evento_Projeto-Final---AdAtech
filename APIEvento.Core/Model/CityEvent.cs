@@ -18,12 +18,12 @@ namespace APIEvent.Core.Model
 
         [Display(Name = "Descrição")]
         [MaxLength(300, ErrorMessage = "Campo {0} deve conter até 300 caracteres")]
-        public string DescriptionEvent { get; set; }
+        public string Description { get; set; }
 
 
         [Required(ErrorMessage = "Campo {0} Obrigatório")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy HH:mm}")]
+       // [DisplayFormat(DataFormatString = "{0: dd/MM/yyyy HH:mm}")]
         [Display(Name = "Data/Hora Evento")]
         public DateTime DateHourEvent { get; set; }
 
@@ -40,7 +40,7 @@ namespace APIEvent.Core.Model
 
         [Required]
         [Display(Name = "Status")]
-        public bool StatusE { get; set; }
+        public bool Status { get; set; }
 
         public CityEvent()
         {

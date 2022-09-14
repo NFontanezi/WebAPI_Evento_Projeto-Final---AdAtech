@@ -15,7 +15,6 @@ namespace APIEvent.Core.Model
         [Display(Name = "Código do Evento")]
         public long IdEvent { get; set; }
 
-        public CityEvent Event { get; set; }
 
         [Required(ErrorMessage = "Campo {0} Obrigatório",AllowEmptyStrings = false)]
         [Display(Name = "Nome")]

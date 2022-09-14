@@ -23,7 +23,7 @@ namespace APIEvent.Core.Service
             return _eventRepository.GetReservationsByName(name);
         }
 
-        public List<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)
+        public EventReservation GetReservationsByTitleAndName(string Title, string PersonName)
         {
             return _eventRepository.GetReservationsByTitleAndName(Title, PersonName);
         }

@@ -46,20 +46,26 @@ namespace APIEvent.Data.Infra.Repository
             return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
         }
 
-        public List<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)
+        public EventReservation GetReservationsByTitleAndName(string Title, string PersonName)
         {
             //VERIFICAR JOIN PARA FUNCIONAR
-            var query = "SELECT * FROM EventReservation WHERE Title LIKE @Title AND PersonName = @PersonName";
+
+            var query = "SELECT* FROM EventReservation AS res " +
+            "JOIN cityEvent AS city " +
+            "ON res.idEvent = city.idEvent " +
+            "WHERE city.Title = @Title " +
+            "AND res.PersonName = @PersonName ";
+ 
 
             var parameters = new DynamicParameters();
-            parameters.Add("@Title", $"%{Title}%");
+            parameters.Add("@Title", Title);
             parameters.Add("@PersonName", PersonName);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Query<EventReservation>(query, parameters).ToList();
+            return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
         }
 
 
@@ -87,7 +93,7 @@ namespace APIEvent.Data.Infra.Repository
             var parameters = new DynamicParameters();
             
             parameters.Add("IdReservation", idReservation);
-            parameters.Add("Qunatity", Quantity);
+            parameters.Add("Quantity", Quantity);
 
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");

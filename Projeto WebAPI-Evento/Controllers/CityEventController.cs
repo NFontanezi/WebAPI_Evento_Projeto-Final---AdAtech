@@ -6,8 +6,8 @@ namespace Projeto_WebAPI_Evento.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Consumes("application/json")]
-    [Produces("application/json")]
+    // [Consumes("application/json")]
+    // [Produces("application/json")]
     public class CityEventController : Controller
     {
         private readonly ICityEventService _cityService;
@@ -17,10 +17,16 @@ namespace Projeto_WebAPI_Evento.Controllers
             _cityService = cityService;
         }
 
-        [HttpGet("/events/consult")]
+        [HttpGet("/events/consult0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<CityEvent>> GetAllEvents()
         {
+            var reservation = _cityService.GetAllEvents();
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
             return Ok(_cityService.GetAllEvents());
         }
 
@@ -43,7 +49,8 @@ namespace Projeto_WebAPI_Evento.Controllers
             return Ok(_cityService.GetEventsByTitle(title));
         }
 
-        [HttpGet("/events/consult2/{local}/{date}")]
+        //[HttpGet("/events/consult2/{local}/{date}")]
+        [HttpGet("/events/consult2")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -62,8 +69,8 @@ namespace Projeto_WebAPI_Evento.Controllers
             }
             return Ok(_cityService.GetEventsByLocalAndDate(Local, DateHourEvent));
         }
-
-        [HttpGet("/events/consult2/{price min}/{price max}/{date}")]
+        //[HttpGet("/events/consult3/{price min}/{price max}/{date}")]
+        [HttpGet("/events/consult3")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -73,6 +80,10 @@ namespace Projeto_WebAPI_Evento.Controllers
             {
                 var reservation = _cityService.GetEventsByPriceAndData(Min, Max, DateHourEvent);
 
+                if (Max == null || Min == null || DateHourEvent == null)
+                {
+                    return BadRequest();
+                }
 
                 if (reservation == null)
                 {

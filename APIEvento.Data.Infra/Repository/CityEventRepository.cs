@@ -79,7 +79,7 @@ namespace APIEvent.Data.Infra.Repository
 
         public bool InsertEvent(CityEvent e)
         {
-            var query = "INSERT INTO CityEvent VALUES (@Title, @DescriptionEvent, @DateHourEvent, @Local, @Adress, @Price, @StatusE)";
+            var query = "INSERT INTO CityEvent VALUES (@Title, @Description, @DateHourEvent, @Local, @Adress, @Price, @Status)";
 
             var parameters = new DynamicParameters(e);
 
@@ -94,7 +94,7 @@ namespace APIEvent.Data.Infra.Repository
         public bool UpdateEvent(int idEvent, CityEvent e)
         {
 
-            var query = @"UPDATE CityEvent set  Title = @Title, DescriptionEvent = @DescriptionEvent, DateHourEvent = @DateHourEvent, Local = @Local, Adress  =@Adress, Price = @Price, StatusE = @StatusE
+            var query = @"UPDATE CityEvent set  Title = @Title, Description = @Description, DateHourEvent = @DateHourEvent, Local = @Local, Adress  =@Adress, Price = @Price, Status = @Status
             where idEvent = @idEvent";
 
             e.IdEvent = idEvent;
@@ -110,7 +110,7 @@ namespace APIEvent.Data.Infra.Repository
 
         public bool DeleteEvent(int IdEvent) // implementar filtro de ativo/ inativo
         {
-            if (!CheckStatus(IdEvent))
+            if (CheckStatus(IdEvent)==true)
             {
 
                 var query = "DELETE FROM CityEvent WHERE IdEvent = @IdEvent ";
@@ -124,28 +124,31 @@ namespace APIEvent.Data.Infra.Repository
 
                 return conn.Execute(query, parameters) == 1;
             }
+            else
+            {
 
-            var query2 = @"UPDATE FROM CityEvent SET Status = 0 WHERE IdEvent = @IdEvent ";
+                var query2 = @"UPDATE CityEvent SET Status = 0 WHERE IdEvent = @IdEvent ";
 
-            var parameters2 = new DynamicParameters();
-            parameters2.Add("Status", 0);
-            parameters2.Add("IdEvent", IdEvent);
+                var parameters2 = new DynamicParameters();
+                parameters2.Add("Status", 0);
+                parameters2.Add("IdEvent", IdEvent);
 
-            var connectionString2 = _configuration.GetConnectionString("DefaultConnection");
+                var connectionString2 = _configuration.GetConnectionString("DefaultConnection");
 
-            using var conn2 = new SqlConnection(connectionString2);
+                using var conn2 = new SqlConnection(connectionString2);
 
-            return conn2.Execute(query2, parameters2) == 1;
+                return conn2.Execute(query2, parameters2) == 1;
+            }
 
         }
 
         public bool CheckStatus(int IdEvent)
         {
-            var query = "SELECT * FROM ReservarionEvent WHERE Status = 1 AND IdEvent = @IdEvent ";
+            var query = "SELECT * FROM EventReservation WHERE IdEvent = @IdEvent ";
 
             var parameters = new DynamicParameters();
             parameters.Add("IdEvent", IdEvent);
-            parameters.Add("Status", 1);
+
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
