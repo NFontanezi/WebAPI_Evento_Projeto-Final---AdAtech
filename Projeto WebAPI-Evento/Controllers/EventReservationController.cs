@@ -45,22 +45,18 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
 
-        [HttpGet("/reservations/consult2/{title}")]
+        [HttpGet("/reservations/consult2/{title}/{name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<EventReservation> GetReservationsByTitle(string title)
+        public ActionResult<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)
         {
-            var reservation = _reservationService.GetReservationsByTitle(title);
-            if (title == null)
-            {
-                return BadRequest();
-            }
+            var reservation = _reservationService.GetReservationsByTitleAndName(Title, PersonName);
+
             if (reservation == null)
             {
                 return NotFound();
             }
-            return Ok(_reservationService.GetReservationsByTitle(title));
+            return Ok(_reservationService.GetReservationsByTitleAndName(Title, PersonName));
         }
 
         [HttpPost("/reservations/insert")]
