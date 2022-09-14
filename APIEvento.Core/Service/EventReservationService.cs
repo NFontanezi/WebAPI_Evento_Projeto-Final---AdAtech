@@ -34,9 +34,9 @@ namespace APIEvent.Core.Service
             return _eventRepository.InsertReservation(e);
         }
 
-        public bool UpdateReservation(int id, EventReservation e)
+        public bool UpdateReservationQuantity(int id, int quant)
         {
-            return _eventRepository.UpdateReservation(id, e);
+            return _eventRepository.UpdateReservationQuantity(id, quant);
         }
 
         public bool DeleteReservation(int id)

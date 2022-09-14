@@ -10,7 +10,9 @@ namespace APIEvent.Core.Interface
 
         List<CityEvent> GetEventsByTitle(string Title);
 
-        List<CityEvent> GetEventsByLocal(string Local);
+        List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent);
+
+        List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent);
 
         bool InsertEvent(CityEvent e);
 

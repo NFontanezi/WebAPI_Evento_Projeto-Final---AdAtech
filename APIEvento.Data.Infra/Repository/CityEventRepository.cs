@@ -8,91 +8,111 @@ using Microsoft.Extensions.Configuration;
 namespace APIEvent.Data.Infra.Repository
 {
 
-        public class CityEventRepository : ICityEventRepository
+    public class CityEventRepository : ICityEventRepository
+    {
+        private readonly IConfiguration _configuration;
+
+        public CityEventRepository(IConfiguration configuration)
         {
-            private readonly IConfiguration _configuration;
+            _configuration = configuration;
+        }
 
-            public CityEventRepository(IConfiguration configuration)
-            {
-                _configuration = configuration;
-            }
+        //METODOS CITY EVENT
+        public List<CityEvent> GetAllEvents()
+        {
+            var query = "SELECT * FROM cityEvent";
 
-            //METODOS CITY EVENT
-            public List<CityEvent> GetAllEvents()
-            {
-                var query = "SELECT * FROM cityEvent";
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            using var conn = new SqlConnection(connectionString);
 
-                using var conn = new SqlConnection(connectionString);
+            return conn.Query<CityEvent>(query).ToList();
+        }
 
-                return conn.Query<CityEvent>(query).ToList();
-            }
-
-            public List<CityEvent> GetEventsByTitle(string Title)
-            {
-                var query = "SELECT * FROM cityEvent WHERE Title LIKE @Title";
+        public List<CityEvent> GetEventsByTitle(string Title)
+        {
+            var query = "SELECT * FROM cityEvent WHERE Title LIKE @Title";
 
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Title", $"%{Title}%"); 
+            var parameters = new DynamicParameters();
+            parameters.Add("@Title", $"%{Title}%");
 
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Query<CityEvent>(query, parameters).ToList();
-            }
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
 
-            public List<CityEvent> GetEventsByLocal(string Local) // add busca por data na service
-            {
-                var query = "SELECT * FROM cityEvent WHERE Title LIKE @Local";
+        public List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent)
+        {
+            var query = "SELECT * FROM cityEvent WHERE Local LIKE @Local AND DateHourEvent = @DateHourEvent";
 
 
-                var parameters = new DynamicParameters();
-                parameters.Add("@Local", $"%{Local}%");
+            var parameters = new DynamicParameters();
+            parameters.Add("@Local", $"%{Local}%");
+            parameters.Add("@DateHourEvent", DateHourEvent);
 
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Query<CityEvent>(query, parameters).ToList();
-            }
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
+        public List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent)
+        {
+            var query = "SELECT * FROM cityEvent WHERE Price BETWEEN @Min AND @Max AND DateHourEvent = @DateHourEvent";
 
-            
-            public bool InsertEvent(CityEvent e)
-            {
-                var query = "INSERT INTO CityEvent VALUES (@Title, @DescriptionEvent, @DateHourEvent, @Local, @Adress, @Price, @StatusE)";
 
-                var parameters = new DynamicParameters(e);
+            var parameters = new DynamicParameters();
+            parameters.Add("@Min", Min);
+            parameters.Add("@Max", Max);
+            parameters.Add("@DateHourEvent", DateHourEvent);
 
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) == 1;
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
 
-            }
 
-            public bool UpdateEvent(int idEvent, CityEvent e)
-            {
+        public bool InsertEvent(CityEvent e)
+        {
+            var query = "INSERT INTO CityEvent VALUES (@Title, @DescriptionEvent, @DateHourEvent, @Local, @Adress, @Price, @StatusE)";
 
-                var query = @"UPDATE CityEvent set  Title = @Title, DescriptionEvent = @DescriptionEvent, DateHourEvent = @DateHourEvent, Local = @Local, Adress  =@Adress, Price = @Price, StatusE = @StatusE
+            var parameters = new DynamicParameters(e);
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using var conn = new SqlConnection(connectionString);
+
+            return conn.Execute(query, parameters) == 1;
+
+        }
+
+        public bool UpdateEvent(int idEvent, CityEvent e)
+        {
+
+            var query = @"UPDATE CityEvent set  Title = @Title, DescriptionEvent = @DescriptionEvent, DateHourEvent = @DateHourEvent, Local = @Local, Adress  =@Adress, Price = @Price, StatusE = @StatusE
             where idEvent = @idEvent";
 
-                e.IdEvent = idEvent;
+            e.IdEvent = idEvent;
 
-                var parameters = new DynamicParameters(e);
+            var parameters = new DynamicParameters(e);
 
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) == 1;
-            }
+            return conn.Execute(query, parameters) == 1;
+        }
 
-            public bool DeleteEvent(int IdEvent) // implementar filtro de ativo/ inativo
+        public bool DeleteEvent(int IdEvent) // implementar filtro de ativo/ inativo
+        {
+            if (!CheckStatus(IdEvent))
             {
+
                 var query = "DELETE FROM CityEvent WHERE IdEvent = @IdEvent ";
 
                 var parameters = new DynamicParameters();
@@ -104,6 +124,35 @@ namespace APIEvent.Data.Infra.Repository
 
                 return conn.Execute(query, parameters) == 1;
             }
+
+            var query2 = @"UPDATE FROM CityEvent SET Status = 0 WHERE IdEvent = @IdEvent ";
+
+            var parameters2 = new DynamicParameters();
+            parameters2.Add("Status", 0);
+            parameters2.Add("IdEvent", IdEvent);
+
+            var connectionString2 = _configuration.GetConnectionString("DefaultConnection");
+
+            using var conn2 = new SqlConnection(connectionString2);
+
+            return conn2.Execute(query2, parameters2) == 1;
+
+        }
+
+        public bool CheckStatus(int IdEvent)
+        {
+            var query = "SELECT * FROM ReservarionEvent WHERE Status = 1 AND IdEvent = @IdEvent ";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("IdEvent", IdEvent);
+            parameters.Add("Status", 1);
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using var conn = new SqlConnection(connectionString);
+
+            return conn.Execute(query, parameters) >= 1;
         }
     }
+}
 

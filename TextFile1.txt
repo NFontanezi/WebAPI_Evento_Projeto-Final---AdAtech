@@ -8,17 +8,18 @@ insert
 >>tratar numero de evento nao existente
 
 update
->>Como tirar os campos que nao quero fazer update - somwente quantidade
+
 >>corrigir exceção se nao houver o FK existente
 
 delete  - ok
 
 CITY EVENT
-GetService
->>implementar busca agrupada : data/range
+
+Get
+response esta dando 200 msm sem titulo/local existente
 
 delete
->>implementar filtro de ativo/ inativo
+ok
 
 update
 >> mostrando 2 ids

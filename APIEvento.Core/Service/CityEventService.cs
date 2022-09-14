@@ -23,10 +23,16 @@ namespace APIEvent.Core.Service
             return _eventRepository.GetEventsByTitle(Title);
         }
 
-        public List<CityEvent> GetEventsByLocal(string Local)
+        public List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent)
         {
-            return _eventRepository.GetEventsByLocal(Local);
+            return _eventRepository.GetEventsByLocalAndDate(Local, DateHourEvent);
         }
+
+        public List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent)
+        {
+            return _eventRepository.GetEventsByPriceAndData(Min, Max, DateHourEvent);
+        }
+
 
         public bool InsertEvent(CityEvent e)
         {

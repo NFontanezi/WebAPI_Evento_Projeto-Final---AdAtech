@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Projeto_WebAPI_Evento.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public class EventReservationController : Controller
     {
         private readonly IEventReservationService _reservationService;
@@ -72,12 +76,12 @@ namespace Projeto_WebAPI_Evento.Controllers
             return CreatedAtAction(nameof(InsertReservation), e);
         }
 
-        [HttpPut("/reservations/update")]
+        [HttpPut("/reservations/update/{id}/{quant}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateReservation(int id, EventReservation e)
+        public IActionResult UpdateReservationQuantity(int id, int quant)
         {
-            var reservation = _reservationService.UpdateReservation(id, e);
+            var reservation = _reservationService.UpdateReservationQuantity(id, quant);
 
             if (!reservation)
             {

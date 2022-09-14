@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Projeto_WebAPI_Evento.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public class CityEventController : Controller
     {
         private readonly ICityEventService _cityService;
@@ -20,7 +24,7 @@ namespace Projeto_WebAPI_Evento.Controllers
             return Ok(_cityService.GetAllEvents());
         }
 
-        
+
         [HttpGet("/events/consult1/{title}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,14 +43,16 @@ namespace Projeto_WebAPI_Evento.Controllers
             return Ok(_cityService.GetEventsByTitle(title));
         }
 
-        [HttpGet("/events/consult2/{local}")]
+        [HttpGet("/events/consult2/{local}/{date}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<CityEvent>> GetEventsByLocal(string local)
+        public ActionResult<List<CityEvent>> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent)
+
         {
-            var reservation = _cityService.GetEventsByLocal(local);
-            if (local == null)
+            var reservation = _cityService.GetEventsByLocalAndDate(Local, DateHourEvent);
+
+            if (Local == null || DateHourEvent == null)
             {
                 return BadRequest();
             }
@@ -54,7 +60,26 @@ namespace Projeto_WebAPI_Evento.Controllers
             {
                 return NotFound();
             }
-            return Ok(_cityService.GetEventsByLocal(local));
+            return Ok(_cityService.GetEventsByLocalAndDate(Local, DateHourEvent));
+        }
+
+        [HttpGet("/events/consult2/{price min}/{price max}/{date}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<CityEvent>> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent)
+        {
+
+            {
+                var reservation = _cityService.GetEventsByPriceAndData(Min, Max, DateHourEvent);
+
+
+                if (reservation == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_cityService.GetEventsByPriceAndData(Min, Max, DateHourEvent));
+            }
         }
 
         [HttpPost("/events/insert")]

@@ -14,7 +14,7 @@ namespace APIEvent.Core.Interface
 
         bool InsertReservation(EventReservation e);
 
-        bool UpdateReservation(int id, EventReservation e);
+        bool UpdateReservationQuantity(int idReservation, int Quantity);
 
         bool DeleteReservation(int id);
 

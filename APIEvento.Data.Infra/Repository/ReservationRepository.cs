@@ -46,13 +46,14 @@ namespace APIEvent.Data.Infra.Repository
             return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
         }
 
-        public List<EventReservation> GetReservationsByTitle(string Title)
-        { 
-            var query = "SELECT * FROM EventReservation WHERE Title LIKE @Title";
-           
+        public List<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)
+        {
+            //VERIFICAR JOIN PARA FUNCIONAR
+            var query = "SELECT * FROM EventReservation WHERE Title LIKE @Title AND PersonName = @PersonName";
 
             var parameters = new DynamicParameters();
-            parameters.Add("@Title", $"%{Title}%"); //VERIFICAR JOIN PARA FUNCIONAR
+            parameters.Add("@Title", $"%{Title}%");
+            parameters.Add("@PersonName", PersonName);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
@@ -77,21 +78,17 @@ namespace APIEvent.Data.Infra.Repository
 
         }
 
-        public bool UpdateReservation(int idReservation, EventReservation e)
+        public bool UpdateReservationQuantity(int idReservation, int Quantity)
         {
 
-            var query = @"UPDATE EventReservation set IdEvent = @IdEvent, PersonName = @PersonName, Quantity = @Quantity
-            where idReservation = @idReservation";
+            var query = @"UPDATE EventReservation set Quantity = @Quantity WHERE IdReservation = @IdReservation";
 
-            e.IdReservation = idReservation;
 
             var parameters = new DynamicParameters();
             
-            parameters.Add("IdReservation", e.IdReservation);
-            parameters.Add("IdEvent", e.IdEvent);
-            parameters.Add("PersonName", e.PersonName);
-            parameters.Add("Quantity", e.Quantity);
-   
+            parameters.Add("IdReservation", idReservation);
+            parameters.Add("Qunatity", Quantity);
+
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
