@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Data.SqlClient;
 
 namespace Projeto_WebAPI_Evento.Filters
 {
@@ -19,8 +20,16 @@ namespace Projeto_WebAPI_Evento.Filters
 
             switch (context.Exception)
             {
+                case SqlException:
+                    problem.Status = 503;
+                    context.Result = new ObjectResult(problem)
+                    {
+                        StatusCode = StatusCodes.Status503ServiceUnavailable
+                    };
+                    break;
 
                 case ArgumentNullException:
+                    problem.Status = 501;
                     context.Result = new ObjectResult(problem)
                     {
                         StatusCode = StatusCodes.Status501NotImplemented
@@ -28,7 +37,6 @@ namespace Projeto_WebAPI_Evento.Filters
                     break;
 
                 case ArgumentException:
-
                     problem.Status = 404;
                     context.Result = new ObjectResult(problem)
                     {
@@ -43,6 +51,7 @@ namespace Projeto_WebAPI_Evento.Filters
                     break;
 
             }
+           
         }
     }
 }

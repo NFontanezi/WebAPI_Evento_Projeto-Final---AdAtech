@@ -15,25 +15,19 @@ namespace APIEvent.Data.Infra.Repository
             _configuration = configuration;
         }
 
-  
+
 
         public List<EventReservation> GetAllReservations()
         {
             var query = "SELECT * FROM EventReservation";
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            try
-            {
-                using var conn = new SqlConnection(connectionString);
 
-                return conn.Query<EventReservation>(query).ToList();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+            using var conn = new SqlConnection(connectionString);
 
-                return null;
-            }
+            return conn.Query<EventReservation>(query).ToList();
+
+
         }
 
 
@@ -53,18 +47,12 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            try
-            {
-                using var conn = new SqlConnection(connectionString);
 
-                return conn.Query<Object>(query, parameters).ToList();
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+            using var conn = new SqlConnection(connectionString);
 
-                return null;
-            }
+            return conn.Query<Object>(query, parameters).ToList();
+
+
         }
 
 
@@ -77,19 +65,11 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            try
-            {
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) == 1;
+            return conn.Execute(query, parameters) == 1;
 
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
 
-                return false;
-            }
 
         }
 
@@ -107,18 +87,9 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            try
-            {
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) == 1;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
-
-                return false;
-            }
+            return conn.Execute(query, parameters) == 1;
 
         }
 
@@ -132,18 +103,10 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            try
-            {
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) == 1;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+            return conn.Execute(query, parameters) == 1;
 
-                return false;
-            }
         }
 
 
