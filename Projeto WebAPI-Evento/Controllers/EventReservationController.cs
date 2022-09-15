@@ -6,8 +6,7 @@ namespace Projeto_WebAPI_Evento.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Consumes("application/json")]
-    //[Produces("application/json")]
+
     public class EventReservationController : Controller
     {
         private readonly IEventReservationService _reservationService;
@@ -17,7 +16,8 @@ namespace Projeto_WebAPI_Evento.Controllers
             _reservationService = reservationService;
         }
 
-        [HttpGet("/reservations/consult")]
+        [HttpGet("/reserva")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<EventReservation>> GetAllEvents()
         {
@@ -25,21 +25,25 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
 
-        [HttpGet("/reservations/consult2/{title}")]
+        [HttpGet("/reserva/consulta/{titulo}/{nome}")]
+        [Consumes("text/plain")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<EventReservation> GetReservationsByTitleAndName(string Title, string PersonName)
+        public ActionResult<EventReservation> GetReservationsByTitleAndName(string titulo, string nome)
         {
-            var reservation = _reservationService.GetReservationsByTitleAndName(Title, PersonName);
+            var reservation = _reservationService.GetReservationsByTitleAndName(titulo, nome);
 
             if (reservation == null)
             {
                 return NotFound();
             }
-            return Ok(_reservationService.GetReservationsByTitleAndName(Title, PersonName));
+            return Ok(_reservationService.GetReservationsByTitleAndName(titulo, nome));
         }
 
-        [HttpPost("/reservations/insert")]
+        [HttpPost("/reserva/cadastrar")]
+        [Consumes("application/json")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult InsertReservation(EventReservation e)
@@ -52,12 +56,14 @@ namespace Projeto_WebAPI_Evento.Controllers
             return CreatedAtAction(nameof(InsertReservation), e);
         }
 
-        [HttpPut("/reservations/update/{id}/{quant}")]
+        [HttpPut("/reserva/atualizar/{id_reserva}/{quantidade}")]
+        [Consumes("text/plain")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateReservationQuantity(int id, int quant)
+        public IActionResult UpdateReservationQuantity(int id_reserva, int quantidade)
         {
-            var reservation = _reservationService.UpdateReservationQuantity(id, quant);
+            var reservation = _reservationService.UpdateReservationQuantity(id_reserva, quantidade);
 
             if (!reservation)
             {
@@ -67,13 +73,14 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
 
-        [HttpDelete("/reservations/delete")]
+        [HttpDelete("/reserva/deletar")]
+        [Consumes("text/plain")]
+        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult DeleteReservation(int id)
+        public IActionResult DeleteReservation(int id_reserva)
         {
-            var reservation = _reservationService.DeleteReservation(id);
+            var reservation = _reservationService.DeleteReservation(id_reserva);
 
             if (!reservation)
             {
