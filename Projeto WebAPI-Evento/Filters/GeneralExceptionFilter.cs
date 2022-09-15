@@ -30,7 +30,7 @@ namespace Projeto_WebAPI_Evento.Filters
                 case FormatException:
                     context.Result = new ObjectResult(problem)
                     {
-                        StatusCode = StatusCodes.Status501NotImplemented // culpa de quem?
+                        StatusCode = StatusCodes.Status501NotImplemented 
                     };
                     break;
                 default:

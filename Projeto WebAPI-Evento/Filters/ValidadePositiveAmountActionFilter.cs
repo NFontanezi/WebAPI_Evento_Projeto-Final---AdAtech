@@ -1,5 +1,4 @@
-﻿
-using APIEvent.Core.Interface;
+﻿using APIEvent.Core.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

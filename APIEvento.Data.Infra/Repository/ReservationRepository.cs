@@ -14,34 +14,38 @@ namespace APIEvent.Data.Infra.Repository
         {
             _configuration = configuration;
         }
-        
 
-
-
-        //METODOS EVENT RESERVATION 
+  
 
         public List<EventReservation> GetAllReservations()
         {
             var query = "SELECT * FROM EventReservation";
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return conn.Query<EventReservation>(query).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
 
-            return conn.Query<EventReservation>(query).ToList();
+                return null;
+            }
         }
 
 
-        public List<Object> GetReservationsByTitleAndName(string Title, string PersonName) 
+        public List<Object> GetReservationsByTitleAndName(string Title, string PersonName)
         {
-            //VERIFICAR JOIN PARA FUNCIONAR
 
             var query = "SELECT* FROM EventReservation AS res " +
             "JOIN cityEvent AS city " +
             "ON res.idEvent = city.idEvent " +
             "WHERE city.Title LIKE ('%' +  @Title  + '%')" +
             "AND res.PersonName = @PersonName ";
- 
+
 
             var parameters = new DynamicParameters();
             parameters.Add("@Title", Title);
@@ -49,9 +53,18 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using var conn = new SqlConnection(connectionString);
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            return conn.Query<Object>(query, parameters).ToList();
+                return conn.Query<Object>(query, parameters).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+
+                return null;
+            }
         }
 
 
@@ -64,9 +77,19 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using var conn = new SqlConnection(connectionString);
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+                return conn.Execute(query, parameters) == 1;
+
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+
+                return false;
+            }
 
         }
 
@@ -77,16 +100,26 @@ namespace APIEvent.Data.Infra.Repository
 
 
             var parameters = new DynamicParameters();
-            
+
             parameters.Add("IdReservation", idReservation);
             parameters.Add("Quantity", Quantity);
 
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using var conn = new SqlConnection(connectionString);
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+                return conn.Execute(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+
+                return false;
+            }
+
         }
 
 
@@ -99,9 +132,18 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using var conn = new SqlConnection(connectionString);
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+                return conn.Execute(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Erro ao comunicar com banco, mensagem {ex.Message}, stack trace {ex.StackTrace}");
+
+                return false;
+            }
         }
 
 

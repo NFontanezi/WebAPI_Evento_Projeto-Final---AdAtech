@@ -1,8 +1,6 @@
 
-tratamento de evento inserido que nao existe >> alterar reserva
-tratar mensagem de erro para data em consulta por local e data
+tratamento de evento insert reserva  com evento que nao existe que nao existe  >> dto
 
 
-implementar filtros
 implementar exceçoes
 implementar admin
