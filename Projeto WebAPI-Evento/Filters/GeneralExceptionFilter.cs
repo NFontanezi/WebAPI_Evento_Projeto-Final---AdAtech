@@ -28,8 +28,11 @@ namespace Projeto_WebAPI_Evento.Filters
                     break;
 
                 case ArgumentException:
+
+                    problem.Status = 404;
                     context.Result = new ObjectResult(problem)
                     {
+                        
                         StatusCode = StatusCodes.Status404NotFound
                     };
                     break;

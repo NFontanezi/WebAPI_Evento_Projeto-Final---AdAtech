@@ -31,9 +31,11 @@ namespace APIEvent.Core.Service
         public bool InsertReservation(EventReservation e)
    
         {
+            
+
             if (!CheckActiveEvent(e.IdEvent))
             {
-                return false; // como lanar exceção para o filtro
+                return false;
               
             }
                 
@@ -52,6 +54,7 @@ namespace APIEvent.Core.Service
 
         public bool CheckActiveEvent(long id)
         {
+
             var listaEvents = _cityEventRepository.GetAllEvents();
 
           return listaEvents.Where(x => x.IdEvent == id && x.Status == true).Any();

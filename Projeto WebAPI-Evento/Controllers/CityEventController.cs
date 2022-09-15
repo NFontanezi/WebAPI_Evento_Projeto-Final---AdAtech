@@ -1,5 +1,6 @@
 ﻿using APIEvent.Core.Interface;
 using APIEvent.Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Projeto_WebAPI_Evento.Filters;
 
@@ -105,6 +106,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public IActionResult UpdateEvent(int id_evento, CityEvent e)
         {
             var reservation = _cityService.UpdateEvent(id_evento, e);
@@ -122,6 +124,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteEvent(int id_evento)
         {
             var reservation = _cityService.DeleteEvent(id_evento);
