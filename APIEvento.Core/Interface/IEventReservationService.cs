@@ -16,5 +16,7 @@ namespace APIEvent.Core.Interface
 
         bool DeleteReservation(int id);
 
+        bool CheckActiveEvent(long id);
+
     }
 }

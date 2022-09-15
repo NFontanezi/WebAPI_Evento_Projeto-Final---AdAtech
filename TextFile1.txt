@@ -1,6 +1,6 @@
 
-tratamento de evento insert reserva  com evento que nao existe que nao existe  >> dto
 
 
-implementar exceçoes
+
+
 implementar admin

@@ -27,12 +27,13 @@ namespace Projeto_WebAPI_Evento.Filters
                     };
                     break;
 
-                case FormatException:
+                case ArgumentException:
                     context.Result = new ObjectResult(problem)
                     {
-                        StatusCode = StatusCodes.Status501NotImplemented 
+                        StatusCode = StatusCodes.Status404NotFound
                     };
                     break;
+
                 default:
                     context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
                     context.Result = new ObjectResult(problem);
