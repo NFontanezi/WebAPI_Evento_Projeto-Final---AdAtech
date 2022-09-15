@@ -1,6 +1,7 @@
 ﻿using APIEvent.Core.Interface;
 using APIEvent.Core.Model;
 using Microsoft.AspNetCore.Mvc;
+using Projeto_WebAPI_Evento.Filters;
 
 namespace Projeto_WebAPI_Evento.Controllers
 {
@@ -67,6 +68,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [HttpGet("/evento/consulta/{preco_min}/{preco_max}/{data}")]
         [Consumes("text/plain")]
         [Produces("application/json")]
+        [ServiceFilter(typeof(ValidadePositiveAmountActionFilter))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<List<CityEvent>> GetEventsByPriceAndData(decimal preco_min,decimal preco_max, DateTime data)

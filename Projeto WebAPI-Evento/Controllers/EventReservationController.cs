@@ -1,6 +1,7 @@
 ﻿using APIEvent.Core.Interface;
 using APIEvent.Core.Model;
 using Microsoft.AspNetCore.Mvc;
+using Projeto_WebAPI_Evento.Filters;
 
 namespace Projeto_WebAPI_Evento.Controllers
 {
@@ -59,6 +60,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [HttpPut("/reserva/atualizar/{id_reserva}/{quantidade}")]
         [Consumes("text/plain")]
         [Produces("application/json")]
+        [ServiceFilter(typeof(ValidatePostiveInputActionFilter))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult UpdateReservationQuantity(int id_reserva, int quantidade)

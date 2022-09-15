@@ -29,12 +29,6 @@ namespace APIEvent.Core.Model
             
         }
 
-        public static List<EventReservation> ReservationList { get; set; } = new();
-
-        public static void AddReservation(EventReservation events)
-        {
-            ReservationList.Add(events);
-        }
 
     }
    

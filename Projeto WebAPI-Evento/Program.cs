@@ -3,6 +3,7 @@ using APIEvent.Core.Service;
 using APIEvent.Data.Infra.Repository;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Projeto_WebAPI_Evento.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +15,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<GeneralExceptionFilter>();
+});
+
 
 builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<ICityEventService, CityEventService>();
 builder.Services.AddScoped<IEventReservationService, EventReservationService>();
+builder.Services.AddScoped<ValidatePostiveInputActionFilter>();
+builder.Services.AddScoped<ValidadePositiveAmountActionFilter>();
 
 
 var app = builder.Build();
@@ -39,6 +47,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 
 app.UseHttpsRedirection();

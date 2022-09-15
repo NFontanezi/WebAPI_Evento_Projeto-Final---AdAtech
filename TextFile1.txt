@@ -1,30 +1,8 @@
 
+tratamento de evento inserido que nao existe >> alterar reserva
+tratar mensagem de erro para data em consulta por local e data
 
-EVENT RESERVATION
-get
->>implementar join para busca por titulo
 
-insert
->>tratar numero de evento nao existente
-
-update
-
->>corrigir exceção se nao houver o FK existente
-
-delete  - ok
-
-CITY EVENT
-
-Get
-response esta dando 200 msm sem titulo/local existente
-
-delete
-ok
-
-update
->> mostrando 2 ids
-
-BOTH
 implementar filtros
 implementar exceçoes
 implementar admin

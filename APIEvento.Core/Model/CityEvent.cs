@@ -42,17 +42,8 @@ namespace APIEvent.Core.Model
         [Display(Name = "Status")]
         public bool Status { get; set; }
 
-        public CityEvent()
-        {
 
-        }
 
-        public static List<CityEvent> EventsList { get; set; } = new();
-
-        public static void AddEvent(CityEvent events)
-        {
-            EventsList.Add(events);
-        }
     }
 
 }
