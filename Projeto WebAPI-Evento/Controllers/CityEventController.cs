@@ -7,7 +7,7 @@ namespace Projeto_WebAPI_Evento.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CityEventController : Controller
+    public class CityEventController : ControllerBase
     {
         private readonly ICityEventService _cityService;
 
@@ -22,7 +22,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         {
             var reservation = _cityService.GetAllEvents();
 
-            if (reservation == null)
+            if (reservation.Count == 0)
             {
                 return NotFound();
             }
@@ -39,7 +39,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         {
             var reservation = _cityService.GetEventsByTitle(titulo);
 
-            if (reservation == null)
+            if (reservation.Count == 0)
             {
                 return NotFound();
             }
@@ -57,14 +57,14 @@ namespace Projeto_WebAPI_Evento.Controllers
         {
             var reservation = _cityService.GetEventsByLocalAndDate(local, data);
 
-            if (reservation == null)
+            if (reservation.Count == 0)
             {
                 return NotFound();
             }
             return Ok(_cityService.GetEventsByLocalAndDate(local, data));
         }
 
-        [HttpGet("/evento/consulta/preco_min}/{preco_max}/{data}")]
+        [HttpGet("/evento/consulta/{preco_min}/{preco_max}/{data}")]
         [Consumes("text/plain")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -61,7 +61,7 @@ namespace APIEvent.Data.Infra.Repository
         }
         public List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent)
         {
-            var query = "SELECT * FROM cityEvent WHERE Price BETWEEN @Min AND @Max AND DateHourEvent = @DateHourEvent";
+            var query = "SELECT * FROM cityEvent WHERE Price BETWEEN @Min AND @Max AND CAST(DateHourEvent as DATE) = CAST(@DateHourEvent AS DATE)";
 
 
             var parameters = new DynamicParameters();
@@ -110,7 +110,7 @@ namespace APIEvent.Data.Infra.Repository
 
         public bool DeleteEvent(int IdEvent) // implementar filtro de ativo/ inativo
         {
-            if (CheckStatus(IdEvent)==true)
+            if (CheckStatus(IdEvent)==false)
             {
 
                 var query = "DELETE FROM CityEvent WHERE IdEvent = @IdEvent ";
@@ -144,10 +144,11 @@ namespace APIEvent.Data.Infra.Repository
 
         public bool CheckStatus(int IdEvent)
         {
-            var query = "SELECT * FROM EventReservation WHERE IdEvent = @IdEvent ";
+            var query = "SELECT * FROM EventReservation WHERE IdEvent = @IdEvent";
 
             var parameters = new DynamicParameters();
             parameters.Add("IdEvent", IdEvent);
+           // parameters.Add("Status", 0);
 
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");

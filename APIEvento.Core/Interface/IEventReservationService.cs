@@ -8,9 +8,7 @@ namespace APIEvent.Core.Interface
     {
         List<EventReservation> GetAllReservations();
 
-        EventReservation GetReservationsByName(string name);
-
-        EventReservation GetReservationsByTitleAndName(string Title, string PersonName);
+        List<Object> GetReservationsByTitleAndName(string Title, string PersonName);
 
         bool InsertReservation(EventReservation e);
 

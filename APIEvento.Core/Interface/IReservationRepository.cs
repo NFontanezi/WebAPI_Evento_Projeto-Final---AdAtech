@@ -10,16 +10,11 @@ namespace APIEvent.Core.Interface
         //METODOS EVENT RESERVATION
         List<EventReservation> GetAllReservations();
 
-        EventReservation GetReservationsByName(string name);
-
-        EventReservation GetReservationsByTitleAndName(string Title, string PersonName);
+        List<Object> GetReservationsByTitleAndName(string Title, string PersonName);
 
         bool InsertReservation(EventReservation e);
 
         bool UpdateReservationQuantity(int idReservation, int Quantity);
-
-
-
 
         bool DeleteReservation(int id);
     }

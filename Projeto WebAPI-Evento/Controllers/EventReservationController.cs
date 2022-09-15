@@ -7,7 +7,7 @@ namespace Projeto_WebAPI_Evento.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class EventReservationController : Controller
+    public class EventReservationController : ControllerBase
     {
         private readonly IEventReservationService _reservationService;
 
@@ -30,11 +30,11 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<EventReservation> GetReservationsByTitleAndName(string titulo, string nome)
+        public ActionResult<List<Object>> GetReservationsByTitleAndName(string titulo, string nome)
         {
             var reservation = _reservationService.GetReservationsByTitleAndName(titulo, nome);
 
-            if (reservation == null)
+            if (reservation.Count == 0)
             {
                 return NotFound();
             }

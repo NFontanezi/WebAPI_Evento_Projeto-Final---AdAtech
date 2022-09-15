@@ -18,12 +18,8 @@ namespace APIEvent.Core.Service
             return _eventRepository.GetAllReservations();
         }
 
-        public EventReservation GetReservationsByName(string name)
-        {
-            return _eventRepository.GetReservationsByName(name);
-        }
 
-        public EventReservation GetReservationsByTitleAndName(string Title, string PersonName)
+        public List<Object> GetReservationsByTitleAndName(string Title, string PersonName)
         {
             return _eventRepository.GetReservationsByTitleAndName(Title, PersonName);
         }
