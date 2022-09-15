@@ -1,5 +1,6 @@
 ﻿using APIEvent.Core.Interface;
 using APIEvent.Core.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Projeto_WebAPI_Evento.Filters;
 
@@ -31,6 +32,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public ActionResult<List<Object>> GetReservationsByTitleAndName(string titulo, string nome)
         {
             var reservation = _reservationService.GetReservationsByTitleAndName(titulo, nome);
@@ -47,6 +49,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize]
         public IActionResult InsertReservation(EventReservation e)
         {
             var reservation = _reservationService.InsertReservation(e);
@@ -63,6 +66,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [ServiceFilter(typeof(ValidatePostiveInputActionFilter))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateReservationQuantity(int id_reserva, int quantidade)
         {
             var reservation = _reservationService.UpdateReservationQuantity(id_reserva, quantidade);
@@ -80,6 +84,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteReservation(int id_reserva)
         {
             var reservation = _reservationService.DeleteReservation(id_reserva);

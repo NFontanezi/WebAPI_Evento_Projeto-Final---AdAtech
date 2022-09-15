@@ -91,6 +91,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "admin")]
         public IActionResult InsertEvent(CityEvent e)
         {
             var reservation = _cityService.InsertEvent(e);
@@ -106,7 +107,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateEvent(int id_evento, CityEvent e)
         {
             var reservation = _cityService.UpdateEvent(id_evento, e);
@@ -119,7 +120,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
 
-        [HttpDelete("/events/deletar")]
+        [HttpDelete("/evento/deletar")]
         [Consumes("text/plain")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
