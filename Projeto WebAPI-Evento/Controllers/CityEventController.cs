@@ -10,6 +10,7 @@ namespace Projeto_WebAPI_Evento.Controllers
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [Authorize]
 
     public class CityEventController : ControllerBase
     {
@@ -19,12 +20,24 @@ namespace Projeto_WebAPI_Evento.Controllers
         {
             _cityService = cityService;
         }
-        
+
+        [HttpGet("/evento")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [AllowAnonymous]
+        public ActionResult<List<CityEvent>> GetAllEvent()
+        {
+            var reservation = _cityService.GetAllEvents();
+
+
+
+            return Ok(reservation);
+        }
 
 
         [HttpGet("/evento/consulta/{titulo}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<ActionResult<List<CityEvent>>> GetEventsByTitleAsync(string titulo)
         {
             var reservation = await _cityService.GetEventsByTitleAsync(titulo);
@@ -39,6 +52,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [HttpGet("/evento/consulta/{local}/{data}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<ActionResult<List<CityEvent>>> GetEventsByLocalAndDateAsync(string local, DateTime data)
         {
             var reservation = await _cityService.GetEventsByLocalAndDateAsync(local, data);
@@ -54,6 +68,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [ServiceFilter(typeof(ValidadePositiveAmountActionFilter))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [AllowAnonymous]
         public async Task<ActionResult<List<CityEvent>>> GetEventsByPriceAndDataAsync(decimal preco_min,decimal preco_max, DateTime data)
         {
 
@@ -69,10 +84,11 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
         [HttpPost("/evento/cadastrar")]
+        [ActionName("InsertEventAsync")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[Authorize(Roles = "admin")]
-        public async Task<ActionResult> InsertEventAsync(CityEvent e) // VERIFICAR ERRO
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult<CityEvent>> InsertEventAsync(CityEvent e) // VERIFICAR ERRO
         {
             var reservation = await _cityService.InsertEventAsync(e);
             if (!reservation)
@@ -85,7 +101,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [HttpPut("/evento/atualizar")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateEventAsync(int id_evento, CityEvent e)
         {
             var reservation = await _cityService.UpdateEventAsync(id_evento, e);
@@ -101,7 +117,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [HttpDelete("/evento/deletar")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteEventAsync(int id_evento)
         {
             var reservation = await _cityService.DeleteEventAsync(id_evento);

@@ -11,6 +11,10 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddControllers();
+
+
 // Add services to the container.
 var key = Encoding.ASCII.GetBytes(builder.Configuration["secretKey"]);
 
@@ -28,13 +32,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //Adi
             ValidAudience = "APIEvent.com"
         };
     });
-
-
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddSwaggerGen(setup =>
 {
@@ -62,14 +59,22 @@ builder.Services.AddSwaggerGen(setup =>
         { jwtSecurityScheme, Array.Empty<string>() }
     });
 
+
 });
 
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
+//filters
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<GeneralExceptionFilter>();
 });
 
-
+//interfaces
 builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<ICityEventService, CityEventService>();
@@ -77,9 +82,9 @@ builder.Services.AddScoped<IEventReservationService, EventReservationService>();
 builder.Services.AddScoped<ValidatePostiveInputActionFilter>();
 builder.Services.AddScoped<ValidadePositiveAmountActionFilter>();
 
-
 var app = builder.Build();
 
+/*
 //padronização de data/hora
 var enUS = new CultureInfo("en-US");
 var localizationOptions = new RequestLocalizationOptions
@@ -90,6 +95,7 @@ var localizationOptions = new RequestLocalizationOptions
 };
 
 app.UseRequestLocalization(localizationOptions);
+*/
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -102,8 +108,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseAuthorization();
 
 app.MapControllers();

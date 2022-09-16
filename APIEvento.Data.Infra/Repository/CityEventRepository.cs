@@ -95,7 +95,7 @@ namespace APIEvent.Data.Infra.Repository
             using var conn = new SqlConnection(connectionString);
 
             return await conn.ExecuteAsync(query, parameters) == 1;
-  
+
 
         }
 
@@ -111,15 +111,15 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return await conn.ExecuteAsync(query, parameters) == 1;
- 
+            return await conn.ExecuteAsync(query, parameters) == 1;
+
         }
 
-        public async Task <bool> DeleteEventAsync(int IdEvent) // VERIFICAR ERRO
+        public async Task<bool> DeleteEventAsync(int IdEvent) // VERIFICAR ERRO
         {
-            if (CheckStatus(IdEvent) == false)
+            if (CheckStatus(IdEvent))
             {
 
                 var query = "DELETE FROM CityEvent WHERE IdEvent = @IdEvent ";
@@ -129,10 +129,10 @@ namespace APIEvent.Data.Infra.Repository
 
                 var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                    using var conn = new SqlConnection(connectionString);
+                using var conn = new SqlConnection(connectionString);
 
-                    return conn.Execute(query, parameters) == 1;
- 
+                return conn.Execute(query, parameters) == 1;
+
             }
             else
             {
@@ -145,10 +145,10 @@ namespace APIEvent.Data.Infra.Repository
 
                 var connectionString2 = _configuration.GetConnectionString("DefaultConnection");
 
-                    using var conn2 = new SqlConnection(connectionString2);
+                using var conn2 = new SqlConnection(connectionString2);
 
-                    return await conn2.ExecuteAsync(query2, parameters2) == 1;
-               
+                return await conn2.ExecuteAsync(query2, parameters2) == 1;
+
             }
 
         }
@@ -163,9 +163,11 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-                using var conn = new SqlConnection(connectionString);
+            using var conn = new SqlConnection(connectionString);
 
-                return conn.Execute(query, parameters) >= 1;
+            var response = conn.Execute(query, parameters) == 0;
+
+            return response;
 
         }
     }
