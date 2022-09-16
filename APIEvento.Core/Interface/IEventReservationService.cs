@@ -6,15 +6,15 @@ namespace APIEvent.Core.Interface
 {
     public interface IEventReservationService
     {
-        List<EventReservation> GetAllReservations();
+        Task<List<EventReservation>> GetAllReservationsAsync();
 
-        List<Object> GetReservationsByTitleAndName(string Title, string PersonName);
+        Task<List<Object>> GetReservationsByTitleAndNameAsync(string Title, string PersonName);
 
-        bool InsertReservation(EventReservation e);
+        Task<bool> InsertReservationAsync(EventReservation e);
 
-        bool UpdateReservationQuantity(int idReservation, int Quantity);
+        Task<bool> UpdateReservationQuantityAsync(int idReservation, int Quantity);
 
-        bool DeleteReservation(int id);
+        Task<bool> DeleteReservationAsync(int id);
 
         bool CheckActiveEvent(long id);
 

@@ -11,42 +11,42 @@ namespace APIEvent.Core.Service
         public CityEventService (ICityEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
-        }   
-
-        public List<CityEvent> GetAllEvents()
-        {
-            return _eventRepository.GetAllEvents();
         }
 
-        public List<CityEvent> GetEventsByTitle(string Title)
+        public  List<CityEvent> GetAllEvents()
         {
-            return _eventRepository.GetEventsByTitle(Title);
+            return  _eventRepository.GetAllEvents();
         }
 
-        public List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent)
+        public async Task<List<CityEvent>> GetEventsByTitleAsync(string Title)
         {
-            return _eventRepository.GetEventsByLocalAndDate(Local, DateHourEvent);
+            return await _eventRepository.GetEventsByTitleAsync(Title);
         }
 
-        public List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent)
+        public async Task<List<CityEvent>> GetEventsByLocalAndDateAsync(string Local, DateTime DateHourEvent)
         {
-            return _eventRepository.GetEventsByPriceAndData(Min, Max, DateHourEvent);
+            return await _eventRepository.GetEventsByLocalAndDateAsync(Local, DateHourEvent);
+        }
+
+        public async Task<List<CityEvent>> GetEventsByPriceAndDataAsync(decimal Min, decimal Max, DateTime DateHourEvent)
+        {
+            return await _eventRepository.GetEventsByPriceAndDataAsync(Min, Max, DateHourEvent);
         }
 
 
-        public bool InsertEvent(CityEvent e)
+        public async Task<bool> InsertEventAsync(CityEvent e)
         {
-            return _eventRepository.InsertEvent(e);
+            return await _eventRepository.InsertEventAsync(e);
         }
 
-        public bool UpdateEvent(int idEvent, CityEvent e)
+        public async Task<bool> UpdateEventAsync(int idEvent, CityEvent e)
         {
-            return _eventRepository.UpdateEvent(idEvent, e);
+            return await _eventRepository.UpdateEventAsync(idEvent, e);
         }
 
-        public bool DeleteEvent(int IdEvent)
+        public async Task<bool> DeleteEventAsync(int IdEvent)
         {
-            return _eventRepository.DeleteEvent(IdEvent);
+            return await _eventRepository.DeleteEventAsync(IdEvent);
         }
 
 

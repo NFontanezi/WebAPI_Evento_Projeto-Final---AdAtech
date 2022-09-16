@@ -15,23 +15,22 @@ namespace APIEvent.Core.Service
             _eventRepository = eventRepository;
             _cityEventRepository = cityEventRepository;
         }
-        //METODOS DE ACESSO
-        public List<EventReservation> GetAllReservations()
+
+        public async Task<List<EventReservation>> GetAllReservationsAsync()
         {
-            return _eventRepository.GetAllReservations();
+            return await _eventRepository.GetAllReservationsAsync();
         }
 
 
-        public List<Object> GetReservationsByTitleAndName(string Title, string PersonName)
+        public async Task<List<Object>> GetReservationsByTitleAndNameAsync(string Title, string PersonName)
         {
-            return _eventRepository.GetReservationsByTitleAndName(Title, PersonName);
+            return await _eventRepository.GetReservationsByTitleAndNameAsync(Title, PersonName);
         }
-       
 
-        public bool InsertReservation(EventReservation e)
-   
+
+        public async Task<bool> InsertReservationAsync(EventReservation e)
+
         {
-            
 
             if (!CheckActiveEvent(e.IdEvent))
             {
@@ -39,17 +38,17 @@ namespace APIEvent.Core.Service
               
             }
                 
-            return _eventRepository.InsertReservation(e);
+            return await _eventRepository.InsertReservationAsync(e);
         }
 
-        public bool UpdateReservationQuantity(int id, int quant)
+       public async Task<bool> UpdateReservationQuantityAsync(int id, int quant)
         {
-            return _eventRepository.UpdateReservationQuantity(id, quant);
+            return await _eventRepository.UpdateReservationQuantityAsync(id, quant);
         }
 
-        public bool DeleteReservation(int id)
+        public async Task<bool> DeleteReservationAsync(int id)
         {
-            return _eventRepository.DeleteReservation(id);
+            return await _eventRepository.DeleteReservationAsync(id);
         }
 
         public bool CheckActiveEvent(long id)

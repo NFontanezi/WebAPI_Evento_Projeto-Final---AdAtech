@@ -8,17 +8,17 @@ namespace APIEvent.Core.Interface
     {
         List<CityEvent> GetAllEvents();
 
-        List<CityEvent> GetEventsByTitle(string Title);
+        Task<List<CityEvent>> GetEventsByTitleAsync(string Title);
 
-        List<CityEvent> GetEventsByLocalAndDate(string Local, DateTime DateHourEvent);
+        Task<List<CityEvent>> GetEventsByLocalAndDateAsync(string Local, DateTime DateHourEvent);
 
-        List<CityEvent> GetEventsByPriceAndData(decimal Min, decimal Max, DateTime DateHourEvent);
+        Task<List<CityEvent>> GetEventsByPriceAndDataAsync(decimal Min, decimal Max, DateTime DateHourEvent);
 
-        bool InsertEvent(CityEvent e);
+        Task<bool> InsertEventAsync(CityEvent e);
 
-        bool UpdateEvent(int idEvent, CityEvent e);
+        Task<bool> UpdateEventAsync(int idEvent, CityEvent e);
 
-        bool DeleteEvent(int IdEvent);
+        Task<bool> DeleteEventAsync(int IdEvent);
 
 
 

@@ -8,6 +8,8 @@ namespace Projeto_WebAPI_Evento.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
+    [Consumes("application/json")]
 
     public class EventReservationController : ControllerBase
     {
@@ -19,57 +21,48 @@ namespace Projeto_WebAPI_Evento.Controllers
         }
 
         [HttpGet("/reserva")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<EventReservation>> GetAllEvents()
+        public async Task<ActionResult<List<EventReservation>>> GetAllReservationsAsync()
         {
-            return Ok(_reservationService.GetAllReservations());
+            return Ok(await _reservationService.GetAllReservationsAsync());
         }
 
 
         [HttpGet("/reserva/consulta/{titulo}/{nome}")]
-        [Consumes("text/plain")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize]
-        public ActionResult<List<Object>> GetReservationsByTitleAndName(string titulo, string nome)
+        public async Task<ActionResult<List<Object>>> GetReservationsByTitleAndNameAsync(string titulo, string nome)
         {
-            var reservation = _reservationService.GetReservationsByTitleAndName(titulo, nome);
+            var reservation = await _reservationService.GetReservationsByTitleAndNameAsync(titulo, nome);
 
             if (reservation.Count == 0)
             {
                 return NotFound();
             }
-            return Ok(_reservationService.GetReservationsByTitleAndName(titulo, nome));
+            return Ok(reservation);
         }
 
         [HttpPost("/reserva/cadastrar")]
-        [Consumes("application/json")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize]
-        public IActionResult InsertReservation(EventReservation e)
+        public async Task<IActionResult> InsertReservationAsync(EventReservation e)
         {
-            var reservation = _reservationService.InsertReservation(e);
+            var reservation = await _reservationService.InsertReservationAsync(e);
             if (!reservation)
             {
                 return BadRequest();
             }
-            return CreatedAtAction(nameof(InsertReservation), e);
+            return CreatedAtAction(nameof(InsertReservationAsync), e);
         }
 
         [HttpPut("/reserva/atualizar/{id_reserva}/{quantidade}")]
-        [Consumes("text/plain")]
-        [Produces("application/json")]
         [ServiceFilter(typeof(ValidatePostiveInputActionFilter))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "admin")]
-        public IActionResult UpdateReservationQuantity(int id_reserva, int quantidade)
+       // [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateReservationQuantityAsync(int id_reserva, int quantidade)
         {
-            var reservation = _reservationService.UpdateReservationQuantity(id_reserva, quantidade);
+            var reservation = await _reservationService.UpdateReservationQuantityAsync(id_reserva, quantidade);
 
             if (!reservation)
             {
@@ -80,14 +73,12 @@ namespace Projeto_WebAPI_Evento.Controllers
 
 
         [HttpDelete("/reserva/deletar")]
-        [Consumes("text/plain")]
-        [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = "admin")]
-        public IActionResult DeleteReservation(int id_reserva)
+        //[Authorize(Roles = "admin")]
+        public async Task<IActionResult> DeleteReservationAsync(int id_reserva)
         {
-            var reservation = _reservationService.DeleteReservation(id_reserva);
+            var reservation = await _reservationService.DeleteReservationAsync(id_reserva);
 
             if (!reservation)
             {

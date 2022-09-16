@@ -17,7 +17,7 @@ namespace APIEvent.Data.Infra.Repository
 
 
 
-        public List<EventReservation> GetAllReservations()
+        public  async Task<List<EventReservation>> GetAllReservationsAsync()
         {
             var query = "SELECT * FROM EventReservation";
 
@@ -25,13 +25,13 @@ namespace APIEvent.Data.Infra.Repository
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Query<EventReservation>(query).ToList();
+            return (await conn.QueryAsync<EventReservation>(query)).ToList();
 
 
         }
 
 
-        public List<Object> GetReservationsByTitleAndName(string Title, string PersonName)
+        public async Task<List<Object>> GetReservationsByTitleAndNameAsync(string Title, string PersonName)
         {
 
             var query = "SELECT* FROM EventReservation AS res " +
@@ -50,14 +50,14 @@ namespace APIEvent.Data.Infra.Repository
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Query<Object>(query, parameters).ToList();
+            return (await conn.QueryAsync<Object>(query, parameters)).ToList();
 
 
         }
 
 
 
-        public bool InsertReservation(EventReservation e)
+        public async Task<bool> InsertReservationAsync(EventReservation e)
         {
             var query = "INSERT INTO EventReservation VALUES (@IdEvent, @PersonName, @Quantity)";
 
@@ -67,13 +67,13 @@ namespace APIEvent.Data.Infra.Repository
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+            return await conn.ExecuteAsync(query, parameters) == 1;
 
 
 
         }
 
-        public bool UpdateReservationQuantity(int idReservation, int Quantity)
+        public async Task<bool> UpdateReservationQuantityAsync(int idReservation, int Quantity)
         {
 
             var query = @"UPDATE EventReservation set Quantity = @Quantity WHERE IdReservation = @IdReservation";
@@ -89,12 +89,12 @@ namespace APIEvent.Data.Infra.Repository
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+            return await conn.ExecuteAsync(query, parameters) == 1;
 
         }
 
 
-        public bool DeleteReservation(int IdReservation)
+        public async Task<bool> DeleteReservationAsync(int IdReservation)
         {
             var query = "DELETE FROM EventReservation WHERE IdReservation = @IdReservation ";
 
@@ -105,7 +105,7 @@ namespace APIEvent.Data.Infra.Repository
 
             using var conn = new SqlConnection(connectionString);
 
-            return conn.Execute(query, parameters) == 1;
+            return await conn.ExecuteAsync(query, parameters) == 1;
 
         }
 

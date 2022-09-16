@@ -7,15 +7,15 @@ namespace APIEvent.Core.Interface
    public interface IReservationRepository
     {
 
-        //METODOS EVENT RESERVATION
-        List<EventReservation> GetAllReservations();
 
-        List<Object> GetReservationsByTitleAndName(string Title, string PersonName);
+        Task<List<EventReservation>> GetAllReservationsAsync();
 
-        bool InsertReservation(EventReservation e);
+        Task<List<Object>> GetReservationsByTitleAndNameAsync(string Title, string PersonName);
 
-        bool UpdateReservationQuantity(int idReservation, int Quantity);
+        Task<bool> InsertReservationAsync(EventReservation e);
 
-        bool DeleteReservation(int id);
+        Task<bool> UpdateReservationQuantityAsync(int idReservation, int Quantity);
+
+        Task<bool> DeleteReservationAsync(int id);
     }
 }
