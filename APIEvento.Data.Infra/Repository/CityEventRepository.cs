@@ -117,7 +117,7 @@ namespace APIEvent.Data.Infra.Repository
  
         }
 
-        public async Task <bool> DeleteEventAsync(int IdEvent) // implementar filtro de ativo/ inativo
+        public async Task <bool> DeleteEventAsync(int IdEvent) // VERIFICAR ERRO
         {
             if (CheckStatus(IdEvent) == false)
             {

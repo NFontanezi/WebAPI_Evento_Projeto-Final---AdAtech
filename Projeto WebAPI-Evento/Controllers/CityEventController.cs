@@ -72,7 +72,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //[Authorize(Roles = "admin")]
-        public async Task<ActionResult> InsertEventAsync(CityEvent e)
+        public async Task<ActionResult> InsertEventAsync(CityEvent e) // VERIFICAR ERRO
         {
             var reservation = await _cityService.InsertEventAsync(e);
             if (!reservation)

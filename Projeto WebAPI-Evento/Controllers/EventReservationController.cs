@@ -30,7 +30,7 @@ namespace Projeto_WebAPI_Evento.Controllers
 
         [HttpGet("/reserva/consulta/{titulo}/{nome}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)] // VERIFICAR ERRO
         public async Task<ActionResult<List<Object>>> GetReservationsByTitleAndNameAsync(string titulo, string nome)
         {
             var reservation = await _reservationService.GetReservationsByTitleAndNameAsync(titulo, nome);
