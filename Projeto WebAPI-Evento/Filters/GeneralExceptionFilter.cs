@@ -22,6 +22,8 @@ namespace Projeto_WebAPI_Evento.Filters
             {
                 case SqlException:
                     problem.Status = 503;
+                    problem.Title = "Erro de comunicação com banco de dados";
+                    problem.Detail = "Erro de comunicação com servidor";
                     context.Result = new ObjectResult(problem)
                     {
                         StatusCode = StatusCodes.Status503ServiceUnavailable
@@ -38,10 +40,23 @@ namespace Projeto_WebAPI_Evento.Filters
 
                 case ArgumentException:
                     problem.Status = 404;
+                    problem.Title = "Argumento informado invalido";
+                    problem.Detail = "Erro inesperado de argumento";
                     context.Result = new ObjectResult(problem)
                     {
                         
                         StatusCode = StatusCodes.Status404NotFound
+                    };
+                    break;
+
+                case BadHttpRequestException:
+                    problem.Status = 400;
+                    problem.Title = "Valor ou formato informado invalido";
+                    problem.Detail = "Erro inesperado de argumento";
+                    context.Result = new ObjectResult(problem)
+                    {
+
+                        StatusCode = StatusCodes.Status400BadRequest
                     };
                     break;
 

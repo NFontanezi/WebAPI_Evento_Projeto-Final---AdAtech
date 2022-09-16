@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿
 using System.ComponentModel.DataAnnotations;
 
 namespace APIEvent.Core.Model
@@ -8,7 +8,9 @@ namespace APIEvent.Core.Model
         [Key]
         public long IdEvent { get; set; }
 
-        [Required(ErrorMessage = "Campo {0} Obrigatório", AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Titulo Obrigatório")]
+        [MinLength(5, ErrorMessage = "Campo {0} deve conter até 300 caracteres")]
+        [MaxLength(300, ErrorMessage = "Campo {0} deve conter até 5 caracteres")]
         public string Title { get; set; }
 
 
@@ -21,12 +23,13 @@ namespace APIEvent.Core.Model
         public DateTime DateHourEvent { get; set; }
 
         [Required(ErrorMessage = "Campo {0} Obrigatório", AllowEmptyStrings = false)]
+        [MaxLength(300, ErrorMessage = "Campo {0} deve conter até 100 caracteres")]
         public string Local { get; set; }
 
-        [Display(Name = "Endereço")]
+        [MaxLength(300, ErrorMessage = "Campo {0} deve conter até 100 caracteres")]
         public string Adress { get; set; }
 
-        [Display(Name = "Preço Unitário")]
+        
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public decimal Price { get; set; }
 

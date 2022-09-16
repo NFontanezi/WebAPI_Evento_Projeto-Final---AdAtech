@@ -10,7 +10,7 @@ namespace Projeto_WebAPI_Evento.Controllers
     [ApiController]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [Authorize]
+   
 
     public class EventReservationController : ControllerBase
     {
@@ -49,7 +49,7 @@ namespace Projeto_WebAPI_Evento.Controllers
         [ActionName("InsertReservationAsync")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize]
+        [Authorize(Roles = "admin, cliente")]
         public async Task<ActionResult<EventReservation>> InsertReservationAsync(EventReservation e)
         {
             var reservation = await _reservationService.InsertReservationAsync(e);

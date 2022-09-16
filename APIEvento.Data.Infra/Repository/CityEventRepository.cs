@@ -25,8 +25,16 @@ namespace APIEvent.Data.Infra.Repository
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             using var conn = new SqlConnection(connectionString);
+            try
+            {
 
-            return (conn.Query<CityEvent>(query)).ToList();
+                return (conn.Query<CityEvent>(query)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
+
+                throw;
+            }
 
         }
 
@@ -40,11 +48,17 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
 
-            return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
-
+                throw;
+            }
         }
 
         public async Task<List<CityEvent>> GetEventsByLocalAndDateAsync(string Local, DateTime DateHourEvent)
@@ -58,11 +72,17 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
 
-            return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
-
+                throw;
+            }
         }
         public async Task<List<CityEvent>> GetEventsByPriceAndDataAsync(decimal Min, decimal Max, DateTime DateHourEvent)
         {
@@ -76,11 +96,17 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
 
-            return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
-
+                throw;
+            }
         }
 
 
@@ -91,11 +117,17 @@ namespace APIEvent.Data.Infra.Repository
             var parameters = new DynamicParameters(e);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
 
-            return await conn.ExecuteAsync(query, parameters) == 1;
-
+                throw;
+            }
 
         }
 
@@ -110,16 +142,22 @@ namespace APIEvent.Data.Infra.Repository
             var parameters = new DynamicParameters(e);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
 
-            return await conn.ExecuteAsync(query, parameters) == 1;
-
+                throw;
+            }
         }
 
-        public async Task<bool> DeleteEventAsync(int IdEvent) // VERIFICAR ERRO
+        public async Task<bool> DeleteEventAsync(int IdEvent)
         {
-            if (CheckStatus(IdEvent))
+            if (CheckStatus(IdEvent)==false)
             {
 
                 var query = "DELETE FROM CityEvent WHERE IdEvent = @IdEvent ";
@@ -128,11 +166,18 @@ namespace APIEvent.Data.Infra.Repository
                 parameters.Add("IdEvent", IdEvent);
 
                 var connectionString = _configuration.GetConnectionString("DefaultConnection");
+                try
+                {
+                    using var conn = new SqlConnection(connectionString);
 
-                using var conn = new SqlConnection(connectionString);
+                    return conn.Execute(query, parameters) == 1;
+                }
 
-                return conn.Execute(query, parameters) == 1;
+                catch (ArgumentException ex)
+                {
 
+                    throw;
+                }
             }
             else
             {
@@ -144,32 +189,45 @@ namespace APIEvent.Data.Infra.Repository
                 parameters2.Add("IdEvent", IdEvent);
 
                 var connectionString2 = _configuration.GetConnectionString("DefaultConnection");
+                try
+                {
+                    using var conn2 = new SqlConnection(connectionString2);
 
-                using var conn2 = new SqlConnection(connectionString2);
+                    return await conn2.ExecuteAsync(query2, parameters2) == 1;
+                }
+                catch (ArgumentException ex)
+                {
 
-                return await conn2.ExecuteAsync(query2, parameters2) == 1;
-
+                    throw;
+                }
             }
 
         }
 
-        public bool CheckStatus(int IdEvent)
+
+        public bool CheckStatus(int id)
         {
-            var query = "SELECT * FROM EventReservation WHERE IdEvent = @IdEvent";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("IdEvent", IdEvent);
-
+            var query = "SELECT * FROM EventReservation";
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                var list =  conn.Query<EventReservation>(query).ToList();
 
-            var response = conn.Execute(query, parameters) == 0;
+                return list.Where(x => x.IdEvent == id ).Any();
 
-            return response;
+            }
+            catch (ArgumentException ex)
+            {
+
+                throw;
+            }
 
         }
+
     }
 }
+
 

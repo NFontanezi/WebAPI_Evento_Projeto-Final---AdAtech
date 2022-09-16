@@ -14,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = false;
+});
 
 // Add services to the container.
 var key = Encoding.ASCII.GetBytes(builder.Configuration["secretKey"]);

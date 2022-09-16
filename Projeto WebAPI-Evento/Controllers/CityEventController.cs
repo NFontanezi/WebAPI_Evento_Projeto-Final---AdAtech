@@ -10,7 +10,6 @@ namespace Projeto_WebAPI_Evento.Controllers
     [ApiController]
     [Consumes("application/json")]
     [Produces("application/json")]
-    [Authorize]
 
     public class CityEventController : ControllerBase
     {

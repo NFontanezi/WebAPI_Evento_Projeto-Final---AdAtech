@@ -17,16 +17,22 @@ namespace APIEvent.Data.Infra.Repository
 
 
 
-        public  async Task<List<EventReservation>> GetAllReservationsAsync()
+        public async Task<List<EventReservation>> GetAllReservationsAsync()
         {
             var query = "SELECT * FROM EventReservation";
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return (await conn.QueryAsync<EventReservation>(query)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
 
-            return (await conn.QueryAsync<EventReservation>(query)).ToList();
-
+                throw;
+            }
 
         }
 
@@ -47,11 +53,17 @@ namespace APIEvent.Data.Infra.Repository
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
 
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return (await conn.QueryAsync<Object>(query, parameters)).ToList();
+            }
+            catch (ArgumentException ex)
+            {
 
-            return (await conn.QueryAsync<Object>(query, parameters)).ToList();
-
+                throw;
+            }
 
         }
 
@@ -64,11 +76,17 @@ namespace APIEvent.Data.Infra.Repository
             var parameters = new DynamicParameters(e);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
 
-            return await conn.ExecuteAsync(query, parameters) == 1;
-
+                throw;
+            }
 
 
         }
@@ -86,10 +104,18 @@ namespace APIEvent.Data.Infra.Repository
 
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return await conn.ExecuteAsync(query, parameters) == 1;
 
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
+
+                throw;
+            }
 
         }
 
@@ -102,11 +128,17 @@ namespace APIEvent.Data.Infra.Repository
             parameters.Add("IdReservation", IdReservation);
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using var conn = new SqlConnection(connectionString);
 
-            using var conn = new SqlConnection(connectionString);
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (ArgumentException ex)
+            {
 
-            return await conn.ExecuteAsync(query, parameters) == 1;
-
+                throw;
+            }
         }
 
 

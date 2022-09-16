@@ -48,6 +48,7 @@ namespace APIEvent.Core.Service
 
         public async Task<bool> DeleteReservationAsync(int id)
         {
+
             return await _eventRepository.DeleteReservationAsync(id);
         }
 
@@ -59,5 +60,7 @@ namespace APIEvent.Core.Service
           return listaEvents.Where(x => x.IdEvent == id && x.Status == true).Any();
             
         }
+
+
     }
 }
